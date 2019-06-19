@@ -33,7 +33,10 @@ class Mail:
         mail.login(self.login, self.password)
         mail.list()
         mail.select("inbox")
-        criterion = '(HEADER Subject "%s")' % header if header else 'ALL'
+        if header:
+            criterion = f'(HEADER Subject {header})'
+        else:
+            criterion = 'ALL'
         result, data = mail.uid('search', None, criterion)
         assert data[0], 'There are no letters with current header'
         latest_email_uid = data[0].split()[-1]
